@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Naujas autorius{% endblock %}
+
+{% block body %}
+    <div class="container" style="width: 600px">
+        <h1>Kurti naują autoriaus paskyrą</h1>
+
+        {{ include('user/_form.html.twig') }}
+
+        <a class="btn btn-dark" href="{{ path('author_index') }}">Atgal</a>
+    </div>
+{% endblock %}
