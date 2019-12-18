@@ -1,0 +1,11 @@
+{{ form_start(form) }}
+    {{ form_row(form.title) }}
+
+    <h3>Klausimai</h3>
+    <ul class="questions" data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}">
+        {% for question in form.questions %}
+            <li>{{ form_row(question.title) }}</li>
+        {% endfor %}
+    </ul>
+    <button class="btn btn-success">{{ button_label|default('Saugoti') }}</button>
+{{ form_end(form) }}

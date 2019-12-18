@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Redaguoti Apklausa{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Redaguoti Apklausą</h1>
+
+        {{ include('survey/_form.html.twig', {'button_label': 'Atnaujinti'}) }}
+
+        <a class="btn btn-dark" href="{{ path('survey_index') }}">Atgal</a>
+
+        {{ include('survey/_delete_form.html.twig') }}
+    </div>
+{% endblock %}
