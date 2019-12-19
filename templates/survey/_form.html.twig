@@ -5,6 +5,12 @@
     <ul class="questions" data-prototype="{{ form_widget(form.questions.vars.prototype)|e('html_attr') }}">
         {% for question in form.questions %}
             <li>{{ form_row(question.title) }}</li>
+            <h3>Atsakymai</h3>
+            <ul class="answers" data-prototype="{{ form_widget(question.answer_options.vars.prototype)|e('html_attr') }}">
+                {% for answer in question.answer_options %}
+                    <li>{{ form_row(answer.answer) }}</li>
+                {% endfor %}
+            </ul>
         {% endfor %}
     </ul>
     <button class="btn btn-success">{{ button_label|default('Saugoti') }}</button>

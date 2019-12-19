@@ -1,7 +1,7 @@
 var $collectionHolder;
 
 // setup an "add a tag" link
-var $addQuestionButton = $('<button type="button" class="add_question_link btn btn-dark">Prideti klausymą</button>');
+var $addQuestionButton = $('<button type="button" class="add_question_link btn btn-dark">Pridėti klausymą</button>');
 var $newLinkLi = $('<li></li>').append($addQuestionButton);
 
 jQuery(document).ready(function() {
@@ -24,15 +24,9 @@ jQuery(document).ready(function() {
 function addQuestionForm($collectionHolder, $newLinkLi) {
     // Get the data-prototype explained earlier
     var prototype = $collectionHolder.data('prototype');
-
     // get the new index
     var index = $collectionHolder.data('index');
-
     var newForm = prototype;
-    // You need this only if you didn't set 'label' => false in your tags field in TaskType
-    // Replace '__name__label__' in the prototype's HTML to
-    // instead be a number based on how many items we have
-    // newForm = newForm.replace(/__name__label__/g, index);
 
     // Replace '__name__' in the prototype's HTML to
     // instead be a number based on how many items we have
@@ -44,4 +38,16 @@ function addQuestionForm($collectionHolder, $newLinkLi) {
     // Display the form in the page in an li, before the "Add a tag" link li
     var $newFormLi = $('<li></li>').append(newForm);
     $newLinkLi.before($newFormLi);
+
+    addQuestionFormDeleteLink($newFormLi);
+}
+
+function addQuestionFormDeleteLink($questionFormLi) {
+    var $removeFormButton = $('<button class="btn btn-danger" type="button">Pašalinti</button>');
+    $questionFormLi.append($removeFormButton);
+
+    $removeFormButton.on('click', function(e) {
+        // remove the li for the tag form
+        $questionFormLi.remove();
+    });
 }

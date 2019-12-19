@@ -11,3 +11,8 @@
         <a class="btn btn-dark" href="{{ path('survey_index') }}">Atgal</a>
     </div>
 {% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('addQuestion') }}
+    {{ encore_entry_script_tags('addAnswerOption') }}
+    {{ parent() }}
+{% endblock %}

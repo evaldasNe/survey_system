@@ -30,7 +30,7 @@ class Question
     private $survey;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\AnswerOption", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="App\Entity\AnswerOption", mappedBy="question",  cascade={"persist"})
      */
     private $answerOptions;
 

@@ -2,23 +2,26 @@
 
 namespace App\Controller;
 
+use App\Entity\AnswerOption;
 use App\Entity\Question;
 use App\Entity\Survey;
 use App\Form\QuestionType;
 use App\Form\SurveyType;
 use App\Repository\SurveyRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/author/survey")
+ * @Route("/survey")
  */
 class SurveyController extends AbstractController
 {
     /**
-     * @Route("/", name="survey_index", methods={"GET"})
+     * @Route("/author/", name="survey_index", methods={"GET"})
      */
     public function index(SurveyRepository $surveyRepository): Response
     {
@@ -28,14 +31,18 @@ class SurveyController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="survey_new", methods={"GET","POST"})
+     * @Route("/author/new", name="survey_new", methods={"GET","POST"})
      */
     public function new(Request $request): Response
     {
         $survey = new Survey();
         $question = new Question();
         $question->setSurvey($survey);
+        $answer_option = new AnswerOption();
+        $answer_option->setQuestion($question);
+        $question->getAnswerOptions()->add($answer_option);
         $survey->getQuestions()->add($question);
+
         $form = $this->createForm(SurveyType::class, $survey);
         $form->handleRequest($request);
 
@@ -68,7 +75,7 @@ class SurveyController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="survey_edit", methods={"GET","POST"})
+     * @Route("/author/{id}/edit", name="survey_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Survey $survey): Response
     {
@@ -88,16 +95,26 @@ class SurveyController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="survey_delete", methods={"DELETE"})
+     * @Route("/author/{id}", name="survey_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Survey $survey): Response
     {
         if ($this->isCsrfTokenValid('delete'.$survey->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
+            $this->deleteQuestions($survey->getQuestions());
             $entityManager->remove($survey);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('survey_index');
+    }
+
+    private function deleteQuestions(Collection $questions){
+        foreach ($questions as $question){
+            foreach ($question->getAnswerOptions() as $answer){
+                $this->getDoctrine()->getManager()->remove($answer);
+            }
+            $this->getDoctrine()->getManager()->remove($question);
+        }
     }
 }

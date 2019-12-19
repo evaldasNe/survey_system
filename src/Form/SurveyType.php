@@ -25,6 +25,7 @@ class SurveyType extends AbstractType
                 'entry_options' => ['label' => false],
                 'allow_add' => true,
                 'by_reference' => false,
+                'allow_delete' => true,
             ])
         ;
     }
