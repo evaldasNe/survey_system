@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ survey.title|capitalize }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>{{ survey.title|capitalize }}</h1>
+
+        <ul class="questions">
+            {% for question in survey.questions %}
+                <li><h3>{{ question.title|capitalize }}</h3></li>
+                <h6>Galimi atsakymai</h6>
+                <ul class="answers">
+                    {% for answer in question.answerOptions %}
+                        <li>{{ answer.answer|capitalize }}</li>
+                    {% endfor %}
+                </ul>
+            {% endfor %}
+        </ul>
+
+        {{ include('attend_survey/_form.html.twig') }}
+
+        <a class="btn btn-dark" href="{{ path('attend_survey_index') }}">Atgal</a>
+    </div>
+{% endblock %}

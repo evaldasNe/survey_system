@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +28,16 @@ class AnswerOption
      * @ORM\JoinColumn(nullable=false)
      */
     private $question;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\AttendSurvey", mappedBy="answers")
+     */
+    private $attendSurveys;
+
+    public function __construct()
+    {
+        $this->attendSurveys = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +64,34 @@ class AnswerOption
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AttendSurvey[]
+     */
+    public function getAttendSurveys(): Collection
+    {
+        return $this->attendSurveys;
+    }
+
+    public function addAttendSurvey(AttendSurvey $attendSurvey): self
+    {
+        if (!$this->attendSurveys->contains($attendSurvey)) {
+            $this->attendSurveys[] = $attendSurvey;
+            $attendSurvey->addAnswer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttendSurvey(AttendSurvey $attendSurvey): self
+    {
+        if ($this->attendSurveys->contains($attendSurvey)) {
+            $this->attendSurveys->removeElement($attendSurvey);
+            $attendSurvey->removeAnswer($this);
+        }
 
         return $this;
     }

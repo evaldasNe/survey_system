@@ -10,6 +10,7 @@ use App\Form\SurveyType;
 use App\Repository\SurveyRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ObjectManager;
+use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,6 +38,7 @@ class SurveyController extends AbstractController
     {
         $survey = new Survey();
         $question = new Question();
+
         $question->setSurvey($survey);
         $answer_option = new AnswerOption();
         $answer_option->setQuestion($question);
@@ -55,10 +57,47 @@ class SurveyController extends AbstractController
 
             $entityManager->flush();
 
+            if ($form->get('saveAndAdd')->isClicked()){
+                return $this->redirectToRoute('survey_question_add', ['id' => $survey->getId()]);
+            }
+
             return $this->redirectToRoute('survey_index');
         }
 
         return $this->render('survey/new.html.twig', [
+            'survey' => $survey,
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/author/{id}/addQuestion", name="survey_question_add", methods={"GET","POST"})
+     */
+    public function addQuestion(Request $request, Survey $survey): Response
+    {
+        $question = new Question();
+        $question->setSurvey($survey);
+        $answer_option = new AnswerOption();
+        $answer_option->setQuestion($question);
+        $question->getAnswerOptions()->add($answer_option);
+        $survey->getQuestions()->add($question);
+
+        $form = $this->createForm(QuestionType::class, $question);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($question);
+            $entityManager->flush();
+
+            if ($form->get('saveAndAdd')->isClicked()){
+                return $this->redirectToRoute('survey_question_add', ['id' => $survey->getId()]);
+            }
+
+            return $this->redirectToRoute('survey_index');
+        }
+
+        return $this->render('survey/add_question.html.twig', [
             'survey' => $survey,
             'form' => $form->createView(),
         ]);

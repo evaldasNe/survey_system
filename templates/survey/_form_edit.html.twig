@@ -1,7 +1,7 @@
 {{ form_start(form) }}
     {{ form_row(form.title) }}
 
-    <h3>Klausimas</h3>
+    <h3>Klausimai</h3>
     <ul class="questions">
         {% for question in form.questions %}
             <li>{{ form_row(question.title) }}</li>
@@ -15,4 +15,7 @@
             </ul>
         {% endfor %}
     </ul>
+
+    {{ form_widget(form.save, { 'label': 'Atnaujinti' }) }}
+    {{ form_widget(form.saveAndAdd, { 'attr': {'hidden': 'hidden'} }) }}
 {{ form_end(form) }}

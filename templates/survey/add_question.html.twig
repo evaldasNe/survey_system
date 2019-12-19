@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Kurti nauja apklausa{% endblock %}
+{% block title %}Pridėti klausimą{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Kurti nauja apklausa</h1>
 
-        {{ include('survey/_form.html.twig') }}
+        {{ include('survey/_form_add_question.html.twig') }}
 
         <a class="btn btn-dark" href="{{ path('survey_index') }}">Atgal</a>
     </div>

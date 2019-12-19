@@ -34,9 +34,15 @@ class Survey
      */
     private $questions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AttendSurvey", mappedBy="survey")
+     */
+    private $attendSurveys;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
+        $this->attendSurveys = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -93,6 +99,37 @@ class Survey
             // set the owning side to null (unless already changed)
             if ($question->getSurvey() === $this) {
                 $question->setSurvey(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AttendSurvey[]
+     */
+    public function getAttendSurveys(): Collection
+    {
+        return $this->attendSurveys;
+    }
+
+    public function addAttendSurvey(AttendSurvey $attendSurvey): self
+    {
+        if (!$this->attendSurveys->contains($attendSurvey)) {
+            $this->attendSurveys[] = $attendSurvey;
+            $attendSurvey->setSurvey($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttendSurvey(AttendSurvey $attendSurvey): self
+    {
+        if ($this->attendSurveys->contains($attendSurvey)) {
+            $this->attendSurveys->removeElement($attendSurvey);
+            // set the owning side to null (unless already changed)
+            if ($attendSurvey->getSurvey() === $this) {
+                $attendSurvey->setSurvey(null);
             }
         }
 

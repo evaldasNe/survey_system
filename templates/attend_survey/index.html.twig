@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AttendSurvey index{% endblock %}
+
+{% block body %}
+    <h1>AttendSurvey index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for attend_survey in attend_surveys %}
+            <tr>
+                <td>{{ attend_survey.id }}</td>
+                <td>
+                    <a href="{{ path('attend_survey_show', {'id': attend_survey.id}) }}">show</a>
+                    <a href="{{ path('attend_survey_edit', {'id': attend_survey.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="2">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('attend_survey_new', {'id': 17}) }}">Create new</a>
+{% endblock %}

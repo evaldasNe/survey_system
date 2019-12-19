@@ -61,9 +61,15 @@ class User implements UserInterface
      */
     private $surveys;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\AttendSurvey", mappedBy="user")
+     */
+    private $attendSurveys;
+
     public function __construct()
     {
         $this->surveys = new ArrayCollection();
+        $this->attendSurveys = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -203,6 +209,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($survey->getCreator() === $this) {
                 $survey->setCreator(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|AttendSurvey[]
+     */
+    public function getAttendSurveys(): Collection
+    {
+        return $this->attendSurveys;
+    }
+
+    public function addAttendSurvey(AttendSurvey $attendSurvey): self
+    {
+        if (!$this->attendSurveys->contains($attendSurvey)) {
+            $this->attendSurveys[] = $attendSurvey;
+            $attendSurvey->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAttendSurvey(AttendSurvey $attendSurvey): self
+    {
+        if ($this->attendSurveys->contains($attendSurvey)) {
+            $this->attendSurveys->removeElement($attendSurvey);
+            // set the owning side to null (unless already changed)
+            if ($attendSurvey->getUser() === $this) {
+                $attendSurvey->setUser(null);
             }
         }
 
