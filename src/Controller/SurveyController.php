@@ -120,9 +120,27 @@ class SurveyController extends AbstractController
      */
     public function surveyResults(Survey $survey, AttendSurveyRepository $attendSurveyRepository): Response
     {
+        $questions_answers = array();
+
         $attended_surveys = $attendSurveyRepository->findBy(['survey' => $survey]);
+        $all_questions = $survey->getQuestions();
+
+        foreach ($all_questions as $question){
+            foreach ($question->getAnswerOptions() as $answerOption){
+                $index = $answerOption->getId();
+                $questions_answers[$index] = 0;
+            }
+        }
+
+        foreach ($attended_surveys as $item){
+            foreach ($item->getAnswers() as $answer){
+                $questions_answers[$answer->getId()]++;
+            }
+        }
+
         return $this->render('survey/results.html.twig', [
-            'attended_surveys' => $attended_surveys,
+            'all_questions' => $all_questions,
+            'all_answers' => $questions_answers,
         ]);
     }
 

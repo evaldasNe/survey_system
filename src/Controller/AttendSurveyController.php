@@ -67,18 +67,4 @@ class AttendSurveyController extends AbstractController
             'survey' => $survey,
         ]);
     }
-
-    /**
-     * @Route("/{id}", name="attend_survey_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, AttendSurvey $attendSurvey): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$attendSurvey->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($attendSurvey);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('survey_index');
-    }
 }
