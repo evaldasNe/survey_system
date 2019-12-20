@@ -18,10 +18,20 @@
                            href="{{ path('survey_show', {'id': survey.id}) }}">
                             Peržiūrėti
                         </a>
-                        <a class="btn btn-primary"
-                           href="#">
-                            Dalyvauti
-                        </a>
+                        {% if app.user %}
+                            {% if survey in attended_surveys %}
+                                {% else%}
+                                    <a class="btn btn-primary"
+                                       href="{{ path('attend_survey', {'id': survey.id}) }}">
+                                        Dalyvauti
+                                    </a>
+                            {% endif %}
+                            {% else %}
+                                <a class="btn btn-primary"
+                                   href="{{ path('attend_survey', {'id': survey.id}) }}">
+                                    Dalyvauti
+                                </a>
+                        {% endif %}
                     </div>
                 </div>
             {% else %}
