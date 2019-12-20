@@ -79,6 +79,6 @@ class AttendSurveyController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('home_page');
+        return $this->redirectToRoute('survey_index');
     }
 }

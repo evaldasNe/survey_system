@@ -20,7 +20,7 @@
                         </a>
                         {% if app.user %}
                             {% if survey in attended_surveys %}
-                                {% else%}
+                                {% elseif is_granted('ROLE_USER')%}
                                     <a class="btn btn-primary"
                                        href="{{ path('attend_survey', {'id': survey.id}) }}">
                                         Dalyvauti

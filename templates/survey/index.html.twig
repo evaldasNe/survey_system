@@ -22,6 +22,12 @@
                     <td>
                         <a class="btn btn-dark" href="{{ path('survey_show', {'id': survey.id}) }}">Peržiūrėti</a>
                         <a class="btn btn-dark" href="{{ path('survey_edit', {'id': survey.id}) }}">Redaguoti</a>
+                        <a class="btn btn-dark" href="{{ path('survey_results', {'id': survey.id}) }}">Rezultatai</a>
+                        <form method="post" action="{{ path('survey_erase_results', {'id': survey.id}) }}" onsubmit="return confirm('Ar tikrai norite pašalinti apklausos rezultatus?');">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ survey.id) }}">
+                            <button class="btn btn-danger">Pašalinti apklausos rezultatus</button>
+                        </form>
                     </td>
                 </tr>
             {% else %}

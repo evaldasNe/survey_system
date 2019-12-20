@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Apklausos rezultatai{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1>Apklausos rezultatai</h1>
+
+        {% for key, attended in attended_surveys %}
+            <h5>Rezultatai dalyvio nr. {{ key+1 }}</h5>
+            <table class="table">
+                <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Klausimas</th>
+                    <th scope="col">Atsakymas</th>
+                </tr>
+                </thead>
+                <tbody>
+            {% for key, one_answer in attended.answers %}
+                <tr>
+                    <td>{{ one_answer.question.title|capitalize }}</td>
+                    <td>{{ one_answer.answer|capitalize }}</td>
+                </tr>
+            {% endfor %}
+                </tbody>
+            </table>
+        {% endfor %}
+
+        <a class="btn btn-dark" href="{{ path('survey_index') }}">Atgal</a>
+    </div>
+{% endblock %}

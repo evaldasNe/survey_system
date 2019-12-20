@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\AnswerOption;
+use App\Entity\AttendSurvey;
 use App\Entity\Question;
 use App\Entity\Survey;
 use App\Form\QuestionType;
 use App\Form\SurveyType;
+use App\Repository\AttendSurveyRepository;
 use App\Repository\SurveyRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ObjectManager;
@@ -111,6 +113,38 @@ class SurveyController extends AbstractController
         return $this->render('survey/show.html.twig', [
             'survey' => $survey,
         ]);
+    }
+
+    /**
+     * @Route("/author/results/{id}", name="survey_results", methods={"GET"})
+     */
+    public function surveyResults(Survey $survey, AttendSurveyRepository $attendSurveyRepository): Response
+    {
+        $attended_surveys = $attendSurveyRepository->findBy(['survey' => $survey]);
+        return $this->render('survey/results.html.twig', [
+            'attended_surveys' => $attended_surveys,
+        ]);
+    }
+
+    /**
+     * @Route("/author/results/{id}", name="survey_erase_results", methods={"DELETE"})
+     */
+    public function surveyEraseResults(Survey $survey, AttendSurveyRepository $attendSurveyRepository): Response
+    {
+        $attended_surveys = $attendSurveyRepository->findBy(['survey' => $survey]);
+
+        foreach ($attended_surveys as $item){
+            $this->deleteSurveyResults($item);
+        }
+
+        return $this->redirectToRoute('survey_index');
+
+    }
+
+    private function deleteSurveyResults(AttendSurvey $attendSurvey){
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($attendSurvey);
+        $entityManager->flush();
     }
 
     /**
