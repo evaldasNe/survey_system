@@ -9,7 +9,8 @@
 -   [Install Composer](https://getcomposer.org/download/), which is used to install PHP packages; (Should have been installed with <i><b>composer install</i></b> command)
 -   [Install Symfony](https://symfony.com/download), which creates in your computer a binary called `symfony` that provides all the tools you need to develop your application locally.
 6. Go back to your project folder and git bash there.
-7. To run application you can use the local web server provided by Symfony.
+7. Edit `28` row of `.env` file to set your database data: `DATABASE_URL=mysql://username:password@127.0.0.1:3306/DB_NAME?serverVersion=5.7`
+8. To run application you can use the local web server provided by Symfony.
 ```sh
 symfony server:start
 ```
