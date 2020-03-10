@@ -1,5 +1,6 @@
 # Survey system
 ## To get started:
+1. Install Yarn `https://yarnpkg.com/getting-started/install`
 1. `git clone https://github.com/evaldasNe/mokyklos_dienynas.git`
 2. `cd mokyklos_dienynas`
 3. `composer install`
