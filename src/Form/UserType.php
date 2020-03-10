@@ -17,19 +17,19 @@ class UserType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'El. paštas',
+                'label' => 'Email',
             ])
             ->add('password', PasswordType::class, [
-                'label' => 'Slaptažodis',
+                'label' => 'Password',
             ])
             ->add('name', TextType::class, [
-                'label' => 'Vardas',
+                'label' => 'Name',
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Pavardė',
+                'label' => 'Last name',
             ])
             ->add('birthdate', BirthdayType::class, [
-                'label' => 'Gimimo data',
+                'label' => 'Birth date',
             ])
         ;
     }

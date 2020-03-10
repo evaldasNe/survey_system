@@ -21,29 +21,29 @@ class RegistrationFormType extends AbstractType
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => 'El. paštas'
+                'label' => 'Email'
             ])
             ->add('name', TextType::class, [
-                'label' => 'Vardas',
+                'label' => 'Name',
             ])
             ->add('lastName', TextType::class, [
-                'label' => 'Pavardė',
+                'label' => 'Last Name',
             ])
             ->add('birthdate', BirthdayType::class, [
-                'label' => 'Gimimo data',
+                'label' => 'Birth date',
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
-                'label' => 'Slaptažodis',
+                'label' => 'Password',
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Prašome įveskite slaptažodį',
+                        'message' => 'Please enter password',
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Jūsų slaptažodis turėtų būti sudarytas bent iš {{ limit }} simbolių',
+                        'minMessage' => 'Password should contain at least {{ limit }} of characters',
                         // max length allowed by Symfony for security reasons
                         'max' => 4096,
                     ]),

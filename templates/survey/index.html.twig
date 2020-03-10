@@ -1,17 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Paklausos{% endblock %}
+{% block title %}Surveys{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Visos apklausos</h1>
+        <h1>All surveys</h1>
 
         <table class="table">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Pavadinimas</th>
-                <th>Veiksmai</th>
+                <th>Title</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -20,13 +20,13 @@
                     <td>{{ survey.id }}</td>
                     <td>{{ survey.title }}</td>
                     <td>
-                        <a class="btn btn-dark" href="{{ path('survey_show', {'id': survey.id}) }}">Peržiūrėti</a>
-                        <a class="btn btn-dark" href="{{ path('survey_edit', {'id': survey.id}) }}">Redaguoti</a>
-                        <a class="btn btn-dark" href="{{ path('survey_results', {'id': survey.id}) }}">Rezultatai</a>
+                        <a class="btn btn-dark" href="{{ path('survey_show', {'id': survey.id}) }}">View</a>
+                        <a class="btn btn-dark" href="{{ path('survey_edit', {'id': survey.id}) }}">Edit</a>
+                        <a class="btn btn-dark" href="{{ path('survey_results', {'id': survey.id}) }}">Results</a>
                         <form method="post" action="{{ path('survey_erase_results', {'id': survey.id}) }}" onsubmit="return confirm('Ar tikrai norite pašalinti apklausos rezultatus?');">
                             <input type="hidden" name="_method" value="DELETE">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ survey.id) }}">
-                            <button class="btn btn-danger">Pašalinti apklausos rezultatus</button>
+                            <button class="btn btn-danger">Remove survey results</button>
                         </form>
                     </td>
                 </tr>
@@ -38,6 +38,6 @@
             </tbody>
         </table>
 
-        <a class="btn btn-primary" href="{{ path('survey_new') }}">Kurti nauja</a>
+        <a class="btn btn-primary" href="{{ path('survey_new') }}">Create new</a>
     </div>
 {% endblock %}

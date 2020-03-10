@@ -19,7 +19,7 @@ class SurveyType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Pavadinimas'
+                'label' => 'Title'
             ])
             ->add('questions', CollectionType::class, [
                 'entry_type' => QuestionType::class,
@@ -29,11 +29,11 @@ class SurveyType extends AbstractType
                 'allow_delete' => true,
             ])
             ->add('saveAndAdd', SubmitType::class, [
-                'label' => 'Pridėti klausimą',
+                'label' => 'Add question',
                 'attr' => ['class' => 'btn-dark'],
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Saugoti',
+                'label' => 'Save',
                 'attr' => ['class' => 'btn-success'],
             ])
         ;

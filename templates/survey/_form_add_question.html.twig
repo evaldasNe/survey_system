@@ -3,7 +3,7 @@
 
     <ul class="question">
         <li>{{ form_row(form.title) }}</li>
-        <h3>Atsakymai</h3>
+        <h3>Answers</h3>
         <ul class="answers" data-prototype="{{ form_widget(form.answer_options.vars.prototype)|e('html_attr') }}">
             {% for answer in form.answer_options %}
                 <li>{{ form_row(answer.answer) }}</li>

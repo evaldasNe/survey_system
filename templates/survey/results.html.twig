@@ -1,16 +1,16 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Apklausos rezultatai{% endblock %}
+{% block title %}Survey results{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Apklausos rezultatai</h1>
+        <h1>Survey results</h1>
 
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr>
-                <th scope="col"><center>Atsakymas</center></th>
-                <th scope="col"><center>Kiek kartų buvo pasirinktas</center></th>
+                <th scope="col"><center>Answer</center></th>
+                <th scope="col"><center>How many times been chosen</center></th>
             </tr>
             </thead>
             <tbody>
@@ -33,6 +33,6 @@
             </tbody>
         </table>
 
-        <a class="btn btn-dark" href="{{ path('survey_index') }}">Atgal</a>
+        <a class="btn btn-dark" href="{{ path('survey_index') }}">Back</a>
     </div>
 {% endblock %}

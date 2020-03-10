@@ -16,7 +16,7 @@ class QuestionType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Klausimas'
+                'label' => 'Question'
             ])
             ->add('answer_options', CollectionType::class, [
                 'entry_type' => AnswerOptionType::class,
@@ -26,11 +26,11 @@ class QuestionType extends AbstractType
                 'allow_delete' => true,
             ])
             ->add('saveAndAdd', SubmitType::class, [
-                'label' => 'Pridėti klausimą',
+                'label' => 'Add question',
                 'attr' => ['class' => 'btn-dark'],
             ])
             ->add('save', SubmitType::class, [
-                'label' => 'Saugoti',
+                'label' => 'Save',
                 'attr' => ['class' => 'btn-success'],
             ])
         ;

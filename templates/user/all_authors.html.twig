@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Visi autoriai{% endblock %}
+{% block title %}All Authors{% endblock %}
 
 {% block body %}
     <div class="container">
-        <h1>Visi autoriai</h1>
+        <h1>All Authors</h1>
 
         <table class="table">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>El. paštas</th>
-                <th>Vardas</th>
-                <th>Pavardė</th>
-                <th>Gimimo data</th>
-                <th>Veiksmai</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>Birth date</th>
+                <th>Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -31,12 +31,12 @@
                 </tr>
             {% else %}
                 <tr>
-                    <td colspan="8">Duomenų nerasta</td>
+                    <td colspan="8">No data found</td>
                 </tr>
             {% endfor %}
             </tbody>
         </table>
 
-        <a class="btn btn-primary" href="{{ path('author_new') }}">Kurti nauja</a>
+        <a class="btn btn-primary" href="{{ path('author_new') }}">Create new</a>
     </div>
 {% endblock %}

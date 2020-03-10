@@ -14,7 +14,7 @@ class AnswerOptionType extends AbstractType
     {
         $builder
             ->add('answer', TextType::class, [
-                'label' => 'Atsakymas',
+                'label' => 'Answer',
             ])
         ;
     }

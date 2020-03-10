@@ -1,6 +1,6 @@
 var $collectionHolder;
 
-var $addAnswerOptionButton = $('<button type="button" class="add_answer_option_link btn btn-dark">Pridėti atsakymą</button>');
+var $addAnswerOptionButton = $('<button type="button" class="add_answer_option_link btn btn-dark">Add answer option</button>');
 var $newLinkLi = $('<li></li>').append($addAnswerOptionButton);
 
 jQuery(document).ready(function() {
@@ -32,7 +32,7 @@ function addAnswerOptionForm($collectionHolder, $newLinkLi) {
 }
 
 function addAnswerOptionFormDeleteLink($answerOptionFormLi) {
-    var $removeFormButton = $('<button class="btn btn-danger" type="button">Pašalinti</button>');
+    var $removeFormButton = $('<button class="btn btn-danger" type="button">Delete</button>');
     $answerOptionFormLi.append($removeFormButton);
 
     $removeFormButton.on('click', function(e) {
