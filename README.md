@@ -1,4 +1,9 @@
 # Survey system
+This system have 3 types of users: admin, author and user. 
+Admin can create and delete authors accounts.
+Author can create, delete survey, also can check and erase survey's results.
+When author is creating new survey answers in question are added dynamically.
+User can attend survey.
 ## To get started:
 1. Install Yarn `https://yarnpkg.com/getting-started/install`
 2. `git clone https://github.com/evaldasNe/survey_system.git`
