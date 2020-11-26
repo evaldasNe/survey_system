@@ -25,8 +25,6 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $client->submit($form);
 
         $this->assertResponseRedirects('/');
-        
-        $this->removeTestUserFromDB($user->getId());
     }
 
     public function testLoginWithWrongPassword()
@@ -52,8 +50,6 @@ class SecurityControllerTest extends WebTestCase
 
         $errorMessage = $crawler->filter('div.alert')->first()->text();
         $this->assertEquals("Invalid credentials.", $errorMessage);
-
-        $this->removeTestUserFromDB($user->getId());
     }
 
     public function testLoginWithWrongEmail()
@@ -79,8 +75,6 @@ class SecurityControllerTest extends WebTestCase
 
         $errorMessage = $crawler->filter('div.alert')->first()->text();
         $this->assertEquals("Email could not be found.", $errorMessage);
-
-        $this->removeTestUserFromDB($user->getId());
     }
 
     private function createTestUser(string $password): User {
@@ -97,12 +91,5 @@ class SecurityControllerTest extends WebTestCase
         $entityManager->flush();
 
         return $user;
-    }
-
-    private function removeTestUserFromDB(int $userID) {
-        $entityManager = static::$container->get('doctrine')->getManager();
-        $user = $entityManager->getRepository(User::class)->find($userID); 
-        $entityManager->remove($user);
-        $entityManager->flush();
     }
 }

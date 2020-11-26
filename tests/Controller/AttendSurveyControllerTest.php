@@ -31,16 +31,6 @@ class AttendSurveyControllerTest extends WebTestCase
         $crawler = $client->submit($form);
 
         $this->assertResponseRedirects('/');
-
-        $this->removeAttendSurveyFromDb($survey);
-        $this->removeTestAnswerFromDB($answer->getId());
-        $this->removeTestQuestionFromDB($question->getId());
-        $this->removeTestSurveyFromDB($survey->getId());
-        $this->removeTestUserFromDB($user->getId());
-        $this->removeTestUserFromDB($creator->getId());
-
-
-
     }
     
     private function createTestSurvey(User $user, Question $question, AnswerOption $answer_option): Survey {
@@ -95,43 +85,5 @@ class AttendSurveyControllerTest extends WebTestCase
         $entityManager->flush();
 
         return $user;
-    }
-
-    private function removeTestUserFromDB(int $userID) {
-        $entityManager = static::$container->get('doctrine')->getManager();
-        $user = $entityManager->getRepository(User::class)->find($userID);
-        $entityManager->remove($user);
-        $entityManager->flush();
-    }
-    private function removeTestAnswerFromDB(int $answerid)
-    {
-        $entityManager = static::$container->get('doctrine')->getManager();
-        $answer = $entityManager->getRepository(AnswerOption::class)->find($answerid);
-        $entityManager->remove($answer);
-        $entityManager->flush();
-    }
-    public function removeAttendSurveyFromDb(Survey $surveyid)
-    {
-        $entityManager = static::$container->get('doctrine')->getManager();
-        $attend_survey = $entityManager->getRepository(AttendSurvey::class)->findOneBy([
-            'survey'=>$surveyid
-        ]);
-        $entityManager->remove($attend_survey);
-        $entityManager->flush();
-    }
-    private function removeTestQuestionFromDB(int $questionid)
-    {
-        $entityManager = static::$container->get('doctrine')->getManager();
-        $question = $entityManager->getRepository(Question::class)->find($questionid);
-        $entityManager->remove($question);
-        $entityManager->flush();
-    }
-
-    private function removeTestSurveyFromDB(int $surveyid)
-    {
-        $entityManager = static::$container->get('doctrine')->getManager();
-        $survey = $entityManager->getRepository(Survey::class)->find($surveyid);
-        $entityManager->remove($survey);
-        $entityManager->flush();
     }
 }

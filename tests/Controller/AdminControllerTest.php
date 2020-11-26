@@ -29,18 +29,9 @@ class AdminControllerTest extends WebTestCase
         // submit the form
         $crawler = $client->submit($form);
 
-        $resposeStatus = $client->getResponse()->getStatusCode();
-        $this->assertEquals(302, $resposeStatus);
-
-        if ($resposeStatus === 302) {
-            $entityManager = static::$container->get('doctrine')->getManager();
-            $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
-
-        // clean up
-        $this->removeTestUserFromDB($admin->getId());
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $client->followRedirect();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
     public function testCreateAuthorWithInvalidEmail()
@@ -67,9 +58,6 @@ class AdminControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('span.form-error-message')->count());
-
-        // clean up
-        $this->removeTestUserFromDB($admin->getId());
     }
 
     public function testDeleteAuthorWithGETMethod()
@@ -85,10 +73,6 @@ class AdminControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/admin/'.$author->getId());
 
         $this->assertEquals(405, $client->getResponse()->getStatusCode());
-
-        // clean up
-        $this->removeTestUserFromDB($admin->getId());
-        $this->removeTestUserFromDB($author->getId());
     }
 
     public function testDeleteAuthor()
@@ -107,10 +91,6 @@ class AdminControllerTest extends WebTestCase
 
         $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // clean up
-        $this->removeTestUserFromDB($admin->getId());
-        $this->removeTestUserFromDB($author->getId());
     }
 
     private function createAdmin(): User {
@@ -143,12 +123,5 @@ class AdminControllerTest extends WebTestCase
         $entityManager->flush();
 
         return $user;
-    }
-
-    private function removeTestUserFromDB(int $userID) {
-        $entityManager = static::$container->get('doctrine')->getManager();
-        $user = $entityManager->getRepository(User::class)->find($userID);
-        $entityManager->remove($user);
-        $entityManager->flush();
     }
 }

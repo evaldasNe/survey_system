@@ -32,10 +32,6 @@ class SurveyControllerTest extends WebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // clean up
-        $this->deleteSurveyByTitle($title);
-        $this->removeTestUserFromDB($author->getId());
     }
 
     public function testCreateSurveyNoData()
@@ -58,9 +54,6 @@ class SurveyControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('span.form-error-message')->count());
-
-        // clean up
-        $this->removeTestUserFromDB($author->getId());
     }
 
     public function testCreateSurveyNoSurveyTitle()
@@ -83,9 +76,6 @@ class SurveyControllerTest extends WebTestCase
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertGreaterThan(0, $crawler->filter('span.form-error-message')->count());
-
-        // clean up
-        $this->removeTestUserFromDB($author->getId());
     }
 
     public function testCheckSurveyResults()
@@ -99,10 +89,6 @@ class SurveyControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/survey/author/results/'.$survey->getId());
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // clean up
-        $this->deleteSurvey($survey);
-        $this->removeTestUserFromDB($author->getId());
     }
 
     public function testEraseSurveyResults()
@@ -122,11 +108,6 @@ class SurveyControllerTest extends WebTestCase
         $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $this->assertEquals(0, count($survey->getAttendSurveys()));
-
-        // clean up
-        $this->deleteSurveyByTitle($survey->getTitle());
-        $this->removeTestUserFromDB($author->getId());
-        $this->removeTestUserFromDB($user->getId());
     }
 
     public function testDeleteSurvey()
@@ -142,10 +123,6 @@ class SurveyControllerTest extends WebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $client->followRedirect();
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
-        // clean up
-        $this->deleteSurveyByTitle($survey->getTitle());
-        $this->removeTestUserFromDB($author->getId());
     }
 
     public function testDeleteSurveyWithWrongID()
@@ -159,43 +136,6 @@ class SurveyControllerTest extends WebTestCase
         $crawler = $client->request('DELETE', '/survey/author/'.($survey->getId()+\rand(0, 1000)));
 
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
-
-        // clean up
-        $this->deleteSurveyByTitle($survey->getTitle());
-        $this->removeTestUserFromDB($author->getId());
-    }
-
-    private function deleteSurveyByTitle($title) {
-        $entityManager = static::$container->get('doctrine')->getManager();
-        $survey = $entityManager->getRepository(Survey::class)->findOneBy(['title' => $title]);
-
-        foreach ($survey->getAttendSurveys() as $attend){
-            $entityManager->remove($attend);
-        }
-
-        foreach ($survey->getQuestions() as $question){
-            foreach ($question->getAnswerOptions() as $answer){
-                $entityManager->remove($answer);
-            }
-            $entityManager->remove($question);
-        }
-
-        $entityManager->remove($survey);
-        $entityManager->flush();
-    }
-
-    private function deleteSurvey($survey) {
-        $entityManager = static::$container->get('doctrine')->getManager();
-
-        foreach ($survey->getQuestions() as $question){
-            foreach ($question->getAnswerOptions() as $answer){
-                $entityManager->remove($answer);
-            }
-            $entityManager->remove($question);
-        }
-
-        $entityManager->remove($survey);
-        $entityManager->flush();
     }
 
     private function createAdmin(): User {

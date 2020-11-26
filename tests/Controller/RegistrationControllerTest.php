@@ -28,14 +28,9 @@ class RegistrationControllerTest extends WebTestCase
         // submit the form
         $crawler = $client->submit($form);
 
-        $resposeStatus = $client->getResponse()->getStatusCode();
-        $this->assertEquals(302, $resposeStatus);
-        if ($resposeStatus === 302) {
-            $entityManager = static::$container->get('doctrine')->getManager();
-            $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $client->followRedirect();
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
     public function testRegisterWithShortPassword()
