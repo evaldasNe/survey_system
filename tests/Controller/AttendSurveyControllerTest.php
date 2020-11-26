@@ -4,20 +4,21 @@ namespace App\Tests\Controller;
 
 use App\Controller\AttendSurveyController;
 use App\Entity\AnswerOption;
+use App\Entity\AttendSurvey;
 use App\Entity\Question;
 use App\Entity\Survey;
 use App\Entity\User;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class AttendSurveyControllerTest extends TestCase
+class AttendSurveyControllerTest extends WebTestCase
 {
     public function testAttendsurvey()
     {
         $client = static::createClient();
         //Login in to attend the survey
         $user = $this->createTestUser();
-        $creator = $this->createTestCreator();
         $client->loginUser($user);
+        $creator = $this->createTestCreator();
         $question = new Question();
         $answer = new AnswerOption();
         $survey = $this->createTestSurvey($creator,$question,$answer);
@@ -31,29 +32,33 @@ class AttendSurveyControllerTest extends TestCase
 
         $this->assertResponseRedirects('/');
 
-        $this->removeTestUserFromDB($user->getId());
+        $this->removeAttendSurveyFromDb($survey);
         $this->removeTestAnswerFromDB($answer->getId());
         $this->removeTestQuestionFromDB($question->getId());
         $this->removeTestSurveyFromDB($survey->getId());
+        $this->removeTestUserFromDB($user->getId());
         $this->removeTestUserFromDB($creator->getId());
 
 
 
     }
-    private function createTestSurvey(User $user, Question $question, AnswerOption $answer): Survey {
+    private function createTestSurvey(User $user, Question $question, AnswerOption $answer_option): Survey {
     $survey = new Survey();
-    $answer->setAnswer('Test');
-    $question->setTitle('Test');
-    $question->addAnswerOption($answer);
     $survey->setTitle('Test');
     $survey->setCreator($user);
-    $survey->addQuestion($question);
+    $question-> setTitle('Test');
+    $question->setSurvey($survey);
+    $answer_option->setAnswer('Test');
+    $answer_option->setQuestion($question);
+    $question->getAnswerOptions()->add($answer_option);
+    $survey->getQuestions()->add($question);
+
 
     $entityManager = static::$container->get('doctrine')->getManager();
     $entityManager->persist($survey);
     $entityManager->persist($user);
     $entityManager->persist($question);
-    $entityManager->persist($answer);
+    $entityManager->persist($answer_option);
     $entityManager->flush();
 
     return $survey;
@@ -61,7 +66,7 @@ class AttendSurveyControllerTest extends TestCase
 
     private function createTestUser(): User {
         $user = new User();
-        $user->setEmail('test1@test1.com');
+        $user->setEmail('testavimas1@test1.com');
         $user->setRoles(["ROLE_USER"]);
         $user->setName("Jonas");
         $user->setLastName("Jonaitis");
@@ -77,7 +82,7 @@ class AttendSurveyControllerTest extends TestCase
 
     private function createTestCreator(): User {
         $user = new User();
-        $user->setEmail('test12@test12.com');
+        $user->setEmail('testavimas12@test12.com');
         $user->setRoles(["ROLE_AUTHOR"]);
         $user->setName("Jonas");
         $user->setLastName("Jonaitis");
@@ -102,6 +107,15 @@ class AttendSurveyControllerTest extends TestCase
         $entityManager = static::$container->get('doctrine')->getManager();
         $answer = $entityManager->getRepository(AnswerOption::class)->find($answerid);
         $entityManager->remove($answer);
+        $entityManager->flush();
+    }
+    public function removeAttendSurveyFromDb(Survey $surveyid)
+    {
+        $entityManager = static::$container->get('doctrine')->getManager();
+        $attend_survey = $entityManager->getRepository(AttendSurvey::class)->findOneBy([
+            'survey'=>$surveyid
+        ]);
+        $entityManager->remove($attend_survey);
         $entityManager->flush();
     }
     private function removeTestQuestionFromDB(int $questionid)
