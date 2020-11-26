@@ -42,26 +42,27 @@ class AttendSurveyControllerTest extends WebTestCase
 
 
     }
+    
     private function createTestSurvey(User $user, Question $question, AnswerOption $answer_option): Survey {
-    $survey = new Survey();
-    $survey->setTitle('Test');
-    $survey->setCreator($user);
-    $question-> setTitle('Test');
-    $question->setSurvey($survey);
-    $answer_option->setAnswer('Test');
-    $answer_option->setQuestion($question);
-    $question->getAnswerOptions()->add($answer_option);
-    $survey->getQuestions()->add($question);
+        $survey = new Survey();
+        $survey->setTitle('Test');
+        $survey->setCreator($user);
+        $question-> setTitle('Test');
+        $question->setSurvey($survey);
+        $answer_option->setAnswer('Test');
+        $answer_option->setQuestion($question);
+        $question->getAnswerOptions()->add($answer_option);
+        $survey->getQuestions()->add($question);
 
 
-    $entityManager = static::$container->get('doctrine')->getManager();
-    $entityManager->persist($survey);
-    $entityManager->persist($user);
-    $entityManager->persist($question);
-    $entityManager->persist($answer_option);
-    $entityManager->flush();
+        $entityManager = static::$container->get('doctrine')->getManager();
+        $entityManager->persist($survey);
+        $entityManager->persist($user);
+        $entityManager->persist($question);
+        $entityManager->persist($answer_option);
+        $entityManager->flush();
 
-    return $survey;
+        return $survey;
     }
 
     private function createTestUser(): User {

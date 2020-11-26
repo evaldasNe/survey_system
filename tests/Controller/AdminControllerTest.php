@@ -2,9 +2,6 @@
 namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use App\Entity\AnswerOption;
-use App\Entity\Question;
-use App\Entity\Survey;
 use App\Entity\User;
 
 class AdminControllerTest extends WebTestCase
@@ -113,6 +110,7 @@ class AdminControllerTest extends WebTestCase
 
         // clean up
         $this->removeTestUserFromDB($admin->getId());
+        $this->removeTestUserFromDB($author->getId());
     }
 
     private function createAdmin(): User {
